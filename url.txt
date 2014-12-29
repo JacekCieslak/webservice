@@ -1,0 +1,7 @@
+http://mstudent.jelastic.dogado.eu
+
+http://localhost:8080/mstudent
+
+INSERT INTO `user`(`username`, `name`, `surname`, `password`, `id_specialization`, `status`) VALUES ("te2t@test.com","test","test","test",
+ (SELECT id_specialization FROM specialization WHERE name="TSW EF-DI3" AND specialization_group="4"), 
+"0")
