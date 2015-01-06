@@ -1,18 +1,19 @@
 package dataObjects;
 
-public class specializationObjects {
-	private String id;
+public class course {
+	private String Id;
 	private String name;
 	private String group;
 	
 	
 	
 	
+
 	public String getId() {
-		return id;
+		return Id;
 	}
 	public void setId(String id) {
-		this.id = id;
+		Id = id;
 	}
 	public String getName() {
 		return name;

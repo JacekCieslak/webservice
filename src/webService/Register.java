@@ -1,15 +1,14 @@
 package webService;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import dataObjects.specializationObjects;
 import database.DBConnection;
 
 
@@ -17,51 +16,39 @@ import database.DBConnection;
 @Path("/register")
 public class Register {
     // HTTP Get Method
-    @GET
+    @POST
     // Path: http://localhost/<appln-folder-name>/register/doregister
     @Path("/doregister")  
     // Produces JSON as response
     @Produces(MediaType.APPLICATION_JSON) 
     // Query parameters are parameters: http://localhost/<appln-folder-name>/register/doregister?name=pqrs&username=abc&password=xyz
-    public String doRegister(@QueryParam("name") String name, @QueryParam("surname") String surname, @QueryParam("username") String uname, @QueryParam("password") String pwd, @QueryParam("id_specialization") String idspe){
-    	String response = "";
-        System.out.println("Inside doregister "+name+" "+surname+" "+uname+"  "+pwd+" "+idspe);
-        int retCode = registerUser(name, surname, uname, pwd, idspe);
+    public Response doRegister(@QueryParam("name") String name, @QueryParam("surname") String surname, @QueryParam("username") String uname, @QueryParam("password") String pwd, @QueryParam("specializationName") String specializationName,  @QueryParam("specializationGroup") String specializationGroup ){
+    	String responseStatus = "";
+      //  System.out.println("Inside doregister "+name+" "+surname+" "+uname+"  "+pwd+" "+specializationName+" "+specializationGroup);
+        int retCode = registerUser(name, surname, uname, pwd, specializationName, specializationGroup);
         if(retCode == 0){
-            response = Utitlity.constructJSON("register",true);
+        	responseStatus = Utitlity.constructJSON("register",true);
         }else if(retCode == 1){
-            response = Utitlity.constructJSON("register",false, "You are already registered");
+        	responseStatus = Utitlity.constructJSON("register",false, "You are already registered");
         }else if(retCode == 2){
-            response = Utitlity.constructJSON("register",false, "Special Characters are not allowed in Username and Password");
+        	responseStatus = Utitlity.constructJSON("register",false, "Special Characters are not allowed in Username and Password");
         }else if(retCode == 3){
-            response = Utitlity.constructJSON("register",false, "Error occured");
+        	responseStatus = Utitlity.constructJSON("register",false, "Error occured");
         }
-        return response;
+        return ResponseUtility.ok(responseStatus);
+  		       
  
     }
     
     
-    @GET
-    @Path("/getspecialization")  
-    @Produces(MediaType.APPLICATION_JSON) 
-    public String speclaization() {
-    	String specjalzations = null;
-    	try{
-    		ArrayList<specializationObjects> specializationData = null;
-    		specializationData = DBConnection.getSpejalizations();
-    		specjalzations = Utitlity.constructSpecializationJSON(specializationData);
-    	}catch(Exception e){
-    		System.out.println("Exception Error");
-    	}
-    	return specjalzations;
-    }
+    
  
-    private int registerUser(String name, String username,  String uname, String pwd, String idspe){
+    private int registerUser(String name, String username,  String uname, String pwd, String specializationName, String specializationGroup){
         System.out.println("Inside checkCredentials");
         int result = 3;
-        if(Utitlity.isNotNull(uname) && Utitlity.isNotNull(username) && Utitlity.isNotNull(pwd) && Utitlity.isNotNull(idspe)){
+        if(Utitlity.isNotNull(uname) && Utitlity.isNotNull(username) && Utitlity.isNotNull(pwd) && Utitlity.isNotNull(specializationName) && Utitlity.isNotNull(specializationGroup)){
             try {
-                if(DBConnection.insertUser(name, username, uname, pwd, idspe)){
+                if(DBConnection.insertUser(name, username, uname, pwd, specializationName, specializationGroup)){
                     System.out.println("RegisterUSer if");
                     result = 0;
                 }

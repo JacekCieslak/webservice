@@ -5,3 +5,20 @@ http://localhost:8080/mstudent
 INSERT INTO `user`(`username`, `name`, `surname`, `password`, `id_specialization`, `status`) VALUES ("te2t@test.com","test","test","test",
  (SELECT id_specialization FROM specialization WHERE name="TSW EF-DI3" AND specialization_group="4"), 
 "0")
+
+
+INSERT INTO `specialization`(`name`, `specialization_group`) 
+
+VALUES ('JAVA - EFA-ZI-4','2'),
+('JAVA - EFA-ZI-4','3'),
+('JAVA - EFA-ZI-4','5'),
+('JAVA - EFA-ZI-4','6'),
+('JAVA - EFA-ZI-4','7'),
+('JAVA - EFA-ZI-4','8'),
+('JAVA - EFA-ZI-4','9'),
+
+('JAVA - EFA-DI-3','7'),
+('JAVA - EFA-DI-3','8'),
+('JAVA - EFA-DI-3','9'),
+('JAVA - EFA-DI-3','10'),
+

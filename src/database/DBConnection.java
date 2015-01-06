@@ -7,16 +7,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import dataObjects.specializationObjects;
+import dataObjects.course;
+import dataObjects.groupedCourse;
 import webService.Constants;
  
 public class DBConnection {
-    /**
-     * Method to create DB Connection
-     * 
-     * @return
-     * @throws Exception
-     */
+   
     @SuppressWarnings("finally")
     public static Connection createConnection() throws Exception {
         Connection con = null;
@@ -30,80 +26,209 @@ public class DBConnection {
             return con;
         }
     }
-    /**
-     * Method to check whether uname and pwd combination are correct
-     * 
-     * @param uname
-     * @param pwd
-     * @return
-     * @throws Exception
-     */
+  
+    //User
     public static boolean checkLogin(String uname, String pwd) throws Exception {
-        boolean isUserAvailable = false;
-        Connection dbConn = null;
-        try {
-            try {
-                dbConn = DBConnection.createConnection();
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            Statement stmt = dbConn.createStatement();
+       
+                
             String query = "SELECT * FROM user WHERE username = '" + uname
                     + "' AND password=" + "'" + pwd + "' AND status ='1'";
-            System.out.println(query);
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                System.out.println(rs.getString(1) + rs.getString(2) + rs.getString(3));
-                isUserAvailable = true;
-            }
-        } catch (SQLException sqle) {
-            throw sqle;
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            if (dbConn != null) {
-                dbConn.close();
-            }
-            throw e;
-        } finally {
-            if (dbConn != null) {
-                dbConn.close();
-            }
-        }
-        return isUserAvailable;
+            
+            return executeIsAvaliable(query);
+         
     }
     
     
     
-    /**
-     * Method to insert uname and pwd in DB
-     * 
-     * @param name
-     * @param uname
-     * @param pwd
-     * @return
-     * @throws SQLException
-     * @throws Exception
-     */
-    public static boolean insertUser(String name, String surname, String uname, String pwd, String idspe) throws SQLException, Exception {
+   
+    public static boolean insertUser(String name, String surname, String uname, String pwd,String courseName, String groupId) throws SQLException, Exception {
+        boolean insertStatus = false;
+        try {
+            String query = "INSERT into user(name, surname, username, password, id_course, status) values('"+name+ "',"+"'"
+                    + surname + "','" + uname + "','" + pwd + "',"
+            		+ "(SELECT id_course FROM course WHERE name='"+courseName+"' AND group_id='"+groupId+"')" + 
+            				",false)";
+           insertStatus = executeInsertQuery(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+            throw e;
+        } 
+        return insertStatus;
+    }
+    
+    public static ArrayList<course> getCourses() throws Exception
+    { 
+    	ArrayList<course> courseData = new ArrayList<course>();
+    	Connection dbConn = null;
+    	try
+    	{
+    		dbConn = DBConnection.createConnection();
+	        
+	    	 Statement stmt = dbConn.createStatement();
+	    	 String query = "SELECT name, count(name) FROM `specialization` GROUP BY name ";
+	    	 
+	    	 ResultSet rs = stmt.executeQuery(query);
+	    	
+	         while (rs.next())
+	         {
+	        	 course courseObject = new course();
+	        	 courseObject.setName(rs.getString(1));
+	        	 courseObject.setGroup(rs.getString(2));
+	        	 courseData.add(courseObject);
+	         }
+	        
+	     
+    	} catch (SQLException sqle) {
+	        System.out.println(sqle);
+	        sqle.printStackTrace();
+	        throw sqle;
+	     } catch (Exception e) {
+	        e.printStackTrace();
+	        System.out.println(e);
+	        if (dbConn != null) {
+	        	dbConn.close();
+	        }
+	        throw e;
+	     } finally {
+	    	 if (dbConn != null) {
+	    		 dbConn.close();
+	    	 }
+	     }
+    	return courseData;
+    }
+    
+    //Admin
+
+    public static boolean checkLoginAdmin(String uname, String pwd) throws Exception {
+       
+            String query = "SELECT * FROM admin WHERE username = '" + uname
+                    + "' AND password=" + "'" + pwd + "'";
+            
+           return executeIsAvaliable(query);
+    }
+    public static ArrayList<course> getCoursesAdmin() throws SQLException, Exception
+    { 
+    	ArrayList<course> specializationData = new ArrayList<course>();
+    	Connection dbConn = null;
+    	try
+    	{
+    		dbConn = DBConnection.createConnection();
+	    	 Statement stmt = dbConn.createStatement();
+	    	 String query = "SELECT id_course, name, group_id FROM `course`ORDER BY name, group_id ";
+	    	 System.out.print(query);
+	 		 ResultSet rs = stmt.executeQuery(query);
+
+	         while (rs.next())
+	         {
+	        	 course specializationObject = new course();
+	        	 specializationObject.setId(rs.getString(1));
+	        	 specializationObject.setName(rs.getString(2));
+	        	 specializationObject.setGroup(rs.getString(3));
+	        	 specializationData.add(specializationObject);
+	         }
+	      
+	 	   } catch (SQLException sqle) {
+		        System.out.println(sqle);
+		        sqle.printStackTrace();
+		        throw sqle;
+		     } catch (Exception e) {
+		        e.printStackTrace();
+		        System.out.println(e);
+		        if (dbConn != null) {
+		        	dbConn.close();
+		        }
+		        throw e;
+		     } finally {
+		    	 if (dbConn != null) {
+		    		 dbConn.close();
+		    	 }
+		     }
+    	return specializationData;
+    }
+    
+    public static boolean insertGroup(String name, String group) throws SQLException, Exception {
+        boolean insertStatus = false;
+        try {
+            String query = "INSERT INTO course(name, group_id) VALUES ('"+name+"','"+group+"')";
+           insertStatus = executeInsertQuery(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+            throw e;
+        } 
+        return insertStatus;
+    }
+    
+    public static boolean updateCourse(String oldname, String newname) throws SQLException, Exception {
+        boolean insertStatus = false;
+        try {
+            String query = "UPDATE course SET name='"+newname+"' WHERE name="+oldname+")";
+           insertStatus = executeInsertQuery(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+            throw e;
+        } 
+        return insertStatus;
+    }
+    
+    
+    public static boolean getGroup(int id, String name) throws Exception{
+    	boolean status = false;
+       
+        try {
+            String query = "SELECT id_course FROM course WHERE UPPER(name)=UPPER('"+name+"') AND group_id='"+id+"'";	
+           status = executeIsAvaliable(query);
+           System.out.print(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+            throw e;
+        }
+        return status;
+    }
+    
+    
+    
+    public static boolean getCourse(String name) throws Exception{
+    	boolean status = false;
+       
+        try {
+            String query = "SELECT name FROM course WHERE UPPER(name)=UPPER('"+name+"')";	
+           status = executeIsAvaliable(query);
+           System.out.print(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+            throw e;
+        }
+        return status;
+    }
+    public static boolean getCourseGroups(String name) throws Exception{
+    	boolean status = false;
+       
+        try {
+            String query = "SELECT name FROM course WHERE UPPER(name)=UPPER('"+name+"')";
+           status = executeIsAvaliable(query);
+           System.out.print(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+            throw e;
+        }
+        return status;
+    }
+    
+    public static boolean updateCourse(int id, String name, String group) throws SQLException, Exception {
         boolean insertStatus = false;
         Connection dbConn = null;
-        System.out.println("try inserstUser" );
         try {
-            try {
-                dbConn = DBConnection.createConnection();
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-            	System.out.println("Poroblem z po³¹czeniem: "+ e);
-                e.printStackTrace();
-            }
+             dbConn = DBConnection.createConnection();
+            
             Statement stmt = dbConn.createStatement();
-            String query = "INSERT into user(name, surname, username, password, id_specialization, status) values('"+name+ "',"+"'"
-                    + surname + "','" + uname + "','" + pwd + "','" + idspe + "',false)";
-            System.out.println(query);
+            String query = "UPDATE course SET name='"+name+"', group_id ='"+group+"' WHERE id_course = '"+id+"'";
             int records = stmt.executeUpdate(query);
-            System.out.println(records);
-            //When record is successfully inserted
             if (records > 0) {
                 insertStatus = true;
             }
@@ -127,32 +252,63 @@ public class DBConnection {
         return insertStatus;
     }
     
-    public static ArrayList<specializationObjects> getSpejalizations() throws SQLException, Exception
+    public static boolean updateCoursesName(String name) throws SQLException, Exception {
+        boolean insertStatus = false;
+        Connection dbConn = null;
+        try {
+             dbConn = DBConnection.createConnection();
+            
+            Statement stmt = dbConn.createStatement();
+            String query = "UPDATE course SET name='"+name+"' WHERE UPPER(name) = UPPER('"+name+"')";
+            System.out.print(query);
+            int records = stmt.executeUpdate(query);
+            if (records > 0) {
+                insertStatus = true;
+            }
+        } catch (SQLException sqle) {
+        	System.out.println(sqle);
+            sqle.printStackTrace();
+            throw sqle;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+            // TODO Auto-generated catch block
+            if (dbConn != null) {
+                dbConn.close();
+            }
+            throw e;
+        } finally {
+            if (dbConn != null) {
+                dbConn.close();
+            }
+        }
+        return insertStatus;
+    }
+    
+    public static ArrayList<groupedCourse> getGroupedCourse() throws Exception
     { 
-    	ArrayList<specializationObjects> specializationData = new ArrayList<specializationObjects>();
-		 Connection dbConn = null;
+    	ArrayList<groupedCourse> coursesData = new ArrayList<groupedCourse>();
+    	Connection dbConn = null;
     	try
     	{
-    		 try {
-                 	dbConn = DBConnection.createConnection();
-	         } catch (Exception e) {
-	                 // TODO Auto-generated catch block
-	             System.out.println("Poroblem z po³¹czeniem: "+ e);
-	             e.printStackTrace();
-	         }
+    		dbConn = DBConnection.createConnection();
+	        
 	    	 Statement stmt = dbConn.createStatement();
-	    	 String query = "SELECT * FROM specialization ORDER BY name ";
+	    	 String query = "SELECT name, count(name) FROM `course` GROUP BY name ";
+	    	 
 	    	 ResultSet rs = stmt.executeQuery(query);
+	    	
 	         while (rs.next())
 	         {
-	        	 specializationObjects specializationObject = new specializationObjects();
-	        	 specializationObject.setId(rs.getString(1));
-	        	 specializationObject.setName(rs.getString(2));
-	        	 specializationObject.setGroup(rs.getString(3));
-	        	 specializationData.add(specializationObject);
+	        	 
+	        	 groupedCourse groupedCourseObject = new groupedCourse();
+	        	 groupedCourseObject.setName(rs.getString(1));
+	        	 groupedCourseObject.setGroupSize(rs.getString(2));
+	        	 coursesData.add(groupedCourseObject);
 	         }
 	        
-	     } catch (SQLException sqle) {
+	     
+    	} catch (SQLException sqle) {
 	        System.out.println(sqle);
 	        sqle.printStackTrace();
 	        throw sqle;
@@ -168,7 +324,108 @@ public class DBConnection {
 	    		 dbConn.close();
 	    	 }
 	     }
-    	return specializationData;
+    	return coursesData;
     }
     
+    public static boolean deleteCourse(int id) throws SQLException, Exception {
+        boolean insertStatus = false;
+        Connection dbConn = null;
+        try {
+             dbConn = DBConnection.createConnection();
+            
+            Statement stmt = dbConn.createStatement();
+            String query = "DELETE FROM `course` WHERE id_course='"+id+"'";
+            int records = stmt.executeUpdate(query);
+            if (records > 0) {
+                insertStatus = true;
+            }
+        } catch (SQLException sqle) {
+        	System.out.println(sqle);
+            sqle.printStackTrace();
+            throw sqle;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+            // TODO Auto-generated catch block
+            if (dbConn != null) {
+                dbConn.close();
+            }
+            throw e;
+        } finally {
+            if (dbConn != null) {
+                dbConn.close();
+            }
+        }
+        return insertStatus;
+    }
+    
+    
+    private static boolean executeInsertQuery(String query) throws SQLException, Exception{
+    	boolean status = false;
+        Connection dbConn = null;
+     //   System.out.println("try inserstUser" );
+        try {
+               
+        	dbConn = DBConnection.createConnection();
+            Statement stmt = dbConn.createStatement();
+           
+            int records = stmt.executeUpdate(query);
+            System.out.println(records);
+            //When record is successfully inserted
+            if (records > 0) {
+                status = true;
+            }
+        } catch (SQLException sqle) {
+        	System.out.println(sqle);
+            sqle.printStackTrace();
+            throw sqle;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+            if (dbConn != null) {
+                dbConn.close();
+            }
+            throw e;
+        } finally {
+            if (dbConn != null) {
+                dbConn.close();
+            }
+        }
+        return status;
+    }
+    
+
+    
+    private static boolean executeIsAvaliable(String query) throws SQLException, Exception {
+        boolean isUserAvailable = false;
+        
+       	Connection dbConn = null;
+        	try
+        	{
+        		dbConn = DBConnection.createConnection();
+    	    	 Statement stmt = dbConn.createStatement();
+    	    	    	    	 
+    	 		 ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                isUserAvailable = true;
+            }
+        } catch (SQLException sqle) {
+	        System.out.println(sqle);
+	        sqle.printStackTrace();
+	        throw sqle;
+	     } catch (Exception e) {
+	        e.printStackTrace();
+	        System.out.println(e);
+	        if (dbConn != null) {
+	        	dbConn.close();
+	        }
+	        throw e;
+	     } finally {
+	    	 if (dbConn != null) {
+	    		 dbConn.close();
+	    	 }
+	     }
+        return isUserAvailable;
+    }
 }

@@ -9,8 +9,8 @@ import javax.ws.rs.core.Response;
 
 import database.DBConnection;
 //Path: http://localhost/<appln-folder-name>/login
-@Path("/login")
-public class Login {
+@Path("/loginadmin")
+public class LoginAdmin {
     // HTTP Get Method
     @GET
     // Path: http://localhost/<appln-folder-name>/login/dologin
@@ -21,11 +21,11 @@ public class Login {
     public Response doLogin(@QueryParam("username") String uname, @QueryParam("password") String pwd){
     	String responseStatus = "";
         if(checkCredentials(uname, pwd)){
-        	responseStatus = Utitlity.constructJSON("login",true);
+        	responseStatus = Utitlity.constructJSONP("login",true);
         }else{
-        	responseStatus = Utitlity.constructJSON("login", false, "Niepoprawny login lub has³o lub twoje konto nie zosta³o jeszcze aktywowane");
+        	responseStatus = Utitlity.constructJSONP("login", false, "Niepoprawny login lub has³o");
         }
-        return ResponseUtility.ok(responseStatus);       
+        return ResponseUtility.ok(responseStatus);     
     }
  
     /**
@@ -40,7 +40,7 @@ public class Login {
         boolean result = false;
         if(Utitlity.isNotNull(uname) && Utitlity.isNotNull(pwd)){
             try {
-                result = DBConnection.checkLogin(uname, pwd);
+                result = DBConnection.checkLoginAdmin(uname, pwd);
                 //System.out.println("Inside checkCredentials try "+result);
             } catch (Exception e) {
                 // TODO Auto-generated catch block

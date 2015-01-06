@@ -8,7 +8,8 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-import dataObjects.specializationObjects;
+import dataObjects.course;
+import dataObjects.groupedCourse;
 
 
 public class Utitlity {
@@ -35,9 +36,12 @@ public class Utitlity {
         try {
             obj.put("tag", tag);
             obj.put("status", new Boolean(status));
+           
+
         } catch (JSONException e) {
             // TODO Auto-generated catch block
         }
+        //return obj.toString();
         return obj.toString();
     }
  
@@ -61,13 +65,46 @@ public class Utitlity {
         return obj.toString();
     }
     
-    public static String constructSpecializationJSON(ArrayList<specializationObjects> specializationData)
+    public static String constructJSONP(String tag, boolean status) {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("tag", tag);
+            obj.put("status", new Boolean(status));
+           
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+        }
+       return obj.toString();
+       // return "callback(" + obj.toString() +")";
+    }
+    
+    public static String constructJSONP(String tag, boolean status,String err_msg) {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("tag", tag);
+            obj.put("status", new Boolean(status));
+            obj.put("error_msg", err_msg);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+        }
+        return obj.toString();
+        //return "callback(" + obj.toString() +")";
+    }
+    
+    
+    public static String constructCourseJSON(ArrayList<course> courseData)
     {
     	Gson gson = new Gson();
-    	String json = gson.toJson(specializationData);
-    		  	
+    	String json = gson.toJson(courseData); 
+		return json;
     	
-          
+    }
+    
+    public static String constructGroupedCourseJSON(ArrayList<groupedCourse> groupedCourseData)
+    {
+    	Gson gson = new Gson();
+    	String json = gson.toJson(groupedCourseData); 
 		return json;
     	
     }
