@@ -1,26 +1,30 @@
 package dataObjects;
 
-public class groupedCourse {
-	
+public class GroupedCourse {
+	private int Id;
 	private String name;
-	private String groupSize;
+	private String group;
 	
 	
 	
 	
 
-	
+	public int getId() {
+		return Id;
+	}
+	public void setId(int id) {
+		Id = id;
+	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	} 
+	public String getGroup() {
+		return group;
 	}
-	public String getGroupSize() {
-		return groupSize;
+	public void setGroup(String group) {
+		this.group = group;
 	}
-	public void setGroupSize(String groupSize) {
-		this.groupSize = groupSize;
-	}
-
 }

@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import dataObjects.course;
-import dataObjects.groupedCourse;
+import dataObjects.GroupedCourse;
+import dataObjects.GroupedCourse;
 
 public class CourseAdministratorDB {
 	
@@ -18,9 +18,9 @@ public class CourseAdministratorDB {
         
        return executeIsAvaliable(query);
 }
-public static ArrayList<course> getCoursesAdmin() throws SQLException, Exception
+public static ArrayList<GroupedCourse> getCoursesAdmin() throws SQLException, Exception
 { 
-	ArrayList<course> specializationData = new ArrayList<course>();
+	ArrayList<GroupedCourse> courseData = new ArrayList<GroupedCourse>();
 	Connection dbConn = null;
 	try
 	{
@@ -32,11 +32,11 @@ public static ArrayList<course> getCoursesAdmin() throws SQLException, Exception
 
          while (rs.next())
          {
-        	 course specializationObject = new course();
-        	 specializationObject.setId(rs.getString(1));
-        	 specializationObject.setName(rs.getString(2));
-        	 specializationObject.setGroup(rs.getString(3));
-        	 specializationData.add(specializationObject);
+        	 GroupedCourse courseObject = new GroupedCourse();
+        	 courseObject.setId(Integer.parseInt(rs.getString(1)));
+        	 courseObject.setName(rs.getString(2));
+        	 courseObject.setGroup(rs.getString(3));
+        	 courseData.add(courseObject);
          }
       
  	   } catch (SQLException sqle) {
@@ -55,7 +55,7 @@ public static ArrayList<course> getCoursesAdmin() throws SQLException, Exception
 	    		 dbConn.close();
 	    	 }
 	     }
-	return specializationData;
+	return courseData;
 }
 
 public static boolean insertGroup(String name, int group) throws SQLException, Exception {
@@ -196,9 +196,9 @@ public static boolean insertCourse(String name, int group) throws SQLException, 
     return insertStatus;
 }
 
-public static ArrayList<groupedCourse> getGroupedCourse() throws Exception
+public static ArrayList<GroupedCourse> getGroupedCourse() throws Exception
 { 
-	ArrayList<groupedCourse> coursesData = new ArrayList<groupedCourse>();
+	ArrayList<GroupedCourse> coursesData = new ArrayList<GroupedCourse>();
 	Connection dbConn = null;
 	try
 	{
@@ -208,14 +208,16 @@ public static ArrayList<groupedCourse> getGroupedCourse() throws Exception
     	 String query = "SELECT name, count(name) FROM `course` GROUP BY name ";
     	 
     	 ResultSet rs = stmt.executeQuery(query);
-    	
+    	 int licznik = 1;
          while (rs.next())
          {
         	 
-        	 groupedCourse groupedCourseObject = new groupedCourse();
+        	 GroupedCourse groupedCourseObject = new GroupedCourse();
+        	 groupedCourseObject.setId(licznik);
         	 groupedCourseObject.setName(rs.getString(1));
-        	 groupedCourseObject.setGroupSize(rs.getString(2));
+        	 groupedCourseObject.setId(Integer.parseInt(rs.getString(2)));
         	 coursesData.add(groupedCourseObject);
+        	 licznik++;
          }
         
      

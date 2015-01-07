@@ -7,8 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import dataObjects.course;
-import dataObjects.groupedCourse;
+import dataObjects.GroupedCourse;
 import webService.Constants;
  
 public class DBConnection {
@@ -57,9 +56,9 @@ public class DBConnection {
         return insertStatus;
     }
     
-    public static ArrayList<course> getCourses() throws Exception
+    public static ArrayList<GroupedCourse> getCourses() throws Exception
     { 
-    	ArrayList<course> courseData = new ArrayList<course>();
+    	ArrayList<GroupedCourse> courseData = new ArrayList<GroupedCourse>();
     	Connection dbConn = null;
     	try
     	{
@@ -72,7 +71,7 @@ public class DBConnection {
 	    	
 	         while (rs.next())
 	         {
-	        	 course courseObject = new course();
+	        	 GroupedCourse courseObject = new GroupedCourse();
 	        	 courseObject.setName(rs.getString(1));
 	        	 courseObject.setGroup(rs.getString(2));
 	        	 courseData.add(courseObject);
@@ -107,9 +106,53 @@ public class DBConnection {
             
            return executeIsAvaliable(query);
     }
-    public static ArrayList<course> getCoursesAdmin() throws SQLException, Exception
+    
+    public static ArrayList<GroupedCourse> getGroupedCourse() throws Exception
     { 
-    	ArrayList<course> specializationData = new ArrayList<course>();
+    	ArrayList<GroupedCourse> coursesData = new ArrayList<GroupedCourse>();
+    	Connection dbConn = null;
+    	try
+    	{
+    		dbConn = DBConnection.createConnection();
+	        
+	    	 Statement stmt = dbConn.createStatement();
+	    	 String query = "SELECT name, count(name) FROM `course` GROUP BY name ";
+	    	 ResultSet rs = stmt.executeQuery(query);
+	    	 int licznik = 1;
+	         while (rs.next())
+	         {
+	        	 
+	        	 GroupedCourse groupedCourseObject = new GroupedCourse();
+	        	 groupedCourseObject.setId(licznik);
+	        	 groupedCourseObject.setName(rs.getString(1));
+	        	 groupedCourseObject.setGroup(rs.getString(2));
+	        	 coursesData.add(groupedCourseObject);
+	        	 licznik++;
+	         }
+	        
+	     
+    	} catch (SQLException sqle) {
+	        System.out.println(sqle);
+	        sqle.printStackTrace();
+	        throw sqle;
+	     } catch (Exception e) {
+	        e.printStackTrace();
+	        System.out.println(e);
+	        if (dbConn != null) {
+	        	dbConn.close();
+	        }
+	        throw e;
+	     } finally {
+	    	 if (dbConn != null) {
+	    		 dbConn.close();
+	    	 }
+	     }
+    	return coursesData;
+    }
+    
+    public static ArrayList<GroupedCourse> getCoursesAdmin() throws SQLException, Exception
+    { 
+    	ArrayList<GroupedCourse> specializationData = new ArrayList<GroupedCourse>();
     	Connection dbConn = null;
     	try
     	{
@@ -121,8 +164,8 @@ public class DBConnection {
 
 	         while (rs.next())
 	         {
-	        	 course specializationObject = new course();
-	        	 specializationObject.setId(rs.getString(1));
+	        	 GroupedCourse specializationObject = new GroupedCourse();
+	        	 specializationObject.setId(Integer.parseInt(rs.getString(1)));
 	        	 specializationObject.setName(rs.getString(2));
 	        	 specializationObject.setGroup(rs.getString(3));
 	        	 specializationData.add(specializationObject);
@@ -285,47 +328,7 @@ public class DBConnection {
         return insertStatus;
     }
     
-    public static ArrayList<groupedCourse> getGroupedCourse() throws Exception
-    { 
-    	ArrayList<groupedCourse> coursesData = new ArrayList<groupedCourse>();
-    	Connection dbConn = null;
-    	try
-    	{
-    		dbConn = DBConnection.createConnection();
-	        
-	    	 Statement stmt = dbConn.createStatement();
-	    	 String query = "SELECT name, count(name) FROM `course` GROUP BY name ";
-	    	 
-	    	 ResultSet rs = stmt.executeQuery(query);
-	    	
-	         while (rs.next())
-	         {
-	        	 
-	        	 groupedCourse groupedCourseObject = new groupedCourse();
-	        	 groupedCourseObject.setName(rs.getString(1));
-	        	 groupedCourseObject.setGroupSize(rs.getString(2));
-	        	 coursesData.add(groupedCourseObject);
-	         }
-	        
-	     
-    	} catch (SQLException sqle) {
-	        System.out.println(sqle);
-	        sqle.printStackTrace();
-	        throw sqle;
-	     } catch (Exception e) {
-	        e.printStackTrace();
-	        System.out.println(e);
-	        if (dbConn != null) {
-	        	dbConn.close();
-	        }
-	        throw e;
-	     } finally {
-	    	 if (dbConn != null) {
-	    		 dbConn.close();
-	    	 }
-	     }
-    	return coursesData;
-    }
+    
     
     public static boolean deleteCourse(int id) throws SQLException, Exception {
         boolean insertStatus = false;

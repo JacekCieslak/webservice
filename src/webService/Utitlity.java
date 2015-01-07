@@ -8,8 +8,9 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-import dataObjects.course;
-import dataObjects.groupedCourse;
+import dataObjects.CourseGroup;
+import dataObjects.GroupedCourse;
+import dataObjects.User;
 
 
 public class Utitlity {
@@ -93,7 +94,7 @@ public class Utitlity {
     }
     
     
-    public static String constructCourseJSON(ArrayList<course> courseData)
+    public static String constructCourseJSON(ArrayList<GroupedCourse> courseData)
     {
     	Gson gson = new Gson();
     	String json = gson.toJson(courseData); 
@@ -101,7 +102,23 @@ public class Utitlity {
     	
     }
     
-    public static String constructGroupedCourseJSON(ArrayList<groupedCourse> groupedCourseData)
+    public static String constructUserJSON(ArrayList<User> userData)
+    {
+    	Gson gson = new Gson();
+    	String json = gson.toJson(userData); 
+		return json;
+    	
+    }
+
+    public static String constructUserGroupJSON(ArrayList<CourseGroup> courseGroupData)
+    {
+    	Gson gson = new Gson();
+    	String json = gson.toJson(courseGroupData); 
+		return json;
+    	
+    }
+    
+    public static String constructGroupedCourseJSON(ArrayList<GroupedCourse> groupedCourseData)
     {
     	Gson gson = new Gson();
     	String json = gson.toJson(groupedCourseData); 

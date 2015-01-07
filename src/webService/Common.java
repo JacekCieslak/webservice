@@ -8,7 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import dataObjects.groupedCourse;
+import dataObjects.GroupedCourse;
 import database.DBConnection;
 
 
@@ -22,7 +22,7 @@ public class Common {
     public Response course() {
     	String courses = null;
     	try{
-    		ArrayList<groupedCourse> groupedCourseData = null;
+    		ArrayList<GroupedCourse> groupedCourseData = null;
     		groupedCourseData = DBConnection.getGroupedCourse();
     		courses = Utitlity.constructGroupedCourseJSON(groupedCourseData);
     	}catch(Exception e){

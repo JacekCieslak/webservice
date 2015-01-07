@@ -11,7 +11,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import dataObjects.course;
+import dataObjects.GroupedCourse;
 import database.CourseAdministratorDB;
  
  @Path("/adminstrator")
@@ -23,7 +23,7 @@ public class CourseAdministrator {
 	    public Response getCourses() {
 	    	String courses = null;
 	    	try{
-	    		ArrayList<course> courseData = null;
+	    		ArrayList<GroupedCourse> courseData = null;
 	    		courseData = CourseAdministratorDB.getCoursesAdmin();
 	    		courses = Utitlity.constructCourseJSON(courseData);
 	    	}catch(Exception e){
