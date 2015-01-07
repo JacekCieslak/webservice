@@ -1,6 +1,14 @@
 http://mstudent.jelastic.dogado.eu
 
+
 http://localhost:8080/mstudent
+
+
+
+
+
+
+
 
 INSERT INTO `user`(`username`, `name`, `surname`, `password`, `id_specialization`, `status`) VALUES ("te2t@test.com","test","test","test",
  (SELECT id_specialization FROM specialization WHERE name="TSW EF-DI3" AND specialization_group="4"), 
@@ -21,4 +29,51 @@ VALUES ('JAVA - EFA-ZI-4','2'),
 ('JAVA - EFA-DI-3','8'),
 ('JAVA - EFA-DI-3','9'),
 ('JAVA - EFA-DI-3','10'),
+
+
+
+INSERT INTO `user`( `username`, `name`, `surname`, `password`, `id_course`, `status`) 
+
+VALUES ("asd1","asd","asd","asd","19","1"),
+("asd2","asd","asd","asd","19","1"),
+("asd3","asd","asd","asd","19","1"),
+("asd4","asd","asd","asd","19","1"),
+("asd5","asd","asd","asd","19","1"),
+("asd6","asd","asd","asd","19","1")
+
+
+
+
+INSERT INTO `course`(`name`, `group_id`) 
+
+VALUES ("JAVATEST","1"),
+("JAVATEST","2"),
+("JAVATEST","3")
+
+
+("asd11","asd","asd","asd","69","1")
+
+INSERT INTO `user`( `username`, `name`, `surname`, `password`, `id_course`, `status`) 
+
+VALUES ("asd11","asd","asd","asd","69","1"),
+("asd12","asd","asd","asd","69","1")
+
+
+DELETE u 
+FROM user u 
+LEFT JOIN course c ON u.id_course = c.id_course 
+where u.id_course = c.id_course
+
+
+INSERT INTO `user`( `username`, `name`, `surname`, `password`, `id_course`, `status`) 
+
+VALUES ("127050@stud.prz.edy.pl","jacek","Cieœlak","admin","73","1"),
+("127051@stud.prz.edy.pl","jacek1","Cieœlak","admin","73","1"),
+("127052@stud.prz.edy.pl","jacek2","Cieœlak","admin","72","1"),
+("127053@stud.prz.edy.pl","jacek3","Cieœlak","admin","144","0"),
+("127054@stud.prz.edy.pl","jacek4","Cieœlak","admin","142","0"),
+("127055@stud.prz.edy.pl","jacek5","Cieœlak","admin","142","1"),
+("127056@stud.prz.edy.pl","jacek6","Cieœlak","admin","80","1"),
+("127057@stud.prz.edy.pl","jacek7","Cieœlak","admin","81","1"),
+("127058@stud.prz.edy.pl","jacek8","Cieœlak","admin","82","1")
 
