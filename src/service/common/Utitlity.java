@@ -6,7 +6,9 @@ import org.codehaus.jettison.json.JSONObject;
 
 import adminstrator.CourseGroup;
 import adminstrator.GroupedCourse;
+import adminstrator.Schedule;
 import adminstrator.User;
+import adminstrator.Users;
 
 import com.google.gson.Gson;
 
@@ -103,6 +105,14 @@ public class Utitlity {
     }
     
     public static String constructUserJSON(ArrayList<User> userData)
+    {
+    	Gson gson = new Gson();
+    	String json = gson.toJson(userData); 
+		return json;
+    	
+    }
+    
+    public static String constructScheduleJSON(ArrayList<Schedule> userData)
     {
     	Gson gson = new Gson();
     	String json = gson.toJson(userData); 
