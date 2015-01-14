@@ -1,6 +1,4 @@
-http://mstudent.jelastic.dogado.eu
-
-
+http://mstudentservice.jelastic.dogado.eu/
 http://localhost:8080/mstudent
 
 
@@ -76,4 +74,11 @@ VALUES ("127050@stud.prz.edy.pl","jacek","Cieœlak","admin","73","1"),
 ("127056@stud.prz.edy.pl","jacek6","Cieœlak","admin","80","1"),
 ("127057@stud.prz.edy.pl","jacek7","Cieœlak","admin","81","1"),
 ("127058@stud.prz.edy.pl","jacek8","Cieœlak","admin","82","1")
+
+
+http://howtodoinjava.com/2013/05/21/jax-rs-resteasy-file-upload-httpclient-example/
+
+http://howtodoinjava.com/2013/05/10/resteasy-file-download-example/
+
+
 

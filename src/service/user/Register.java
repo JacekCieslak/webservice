@@ -2,11 +2,13 @@ package user;
 
 import java.sql.SQLException;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import common.DBConnection;
@@ -14,20 +16,30 @@ import common.ResponseUtility;
 import common.Utitlity;
 
 
-//Path: http://localhost/<appln-folder-name>/register
 @Path("/register")
 public class Register {
-    // HTTP Get Method
     @POST
-    // Path: http://localhost/<appln-folder-name>/register/doregister
     @Path("/doregister")  
-    // Produces JSON as response
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON) 
-    // Query parameters are parameters: http://localhost/<appln-folder-name>/register/doregister?name=pqrs&username=abc&password=xyz
-    public Response doRegister(@QueryParam("name") String name, @QueryParam("surname") String surname, @QueryParam("username") String uname, @QueryParam("password") String pwd, @QueryParam("specializationName") String specializationName,  @QueryParam("specializationGroup") String specializationGroup ){
+   // public Response doRegister(@QueryParam("name") String name, @QueryParam("surname") String surname, @QueryParam("username") String uname, @QueryParam("password") String pwd, @QueryParam("coursename") String courseName,  @QueryParam("coursegroup") String courseGroup ){
+    public Response doRegister(MultivaluedMap<String, String> newUser){
+    	
+    	String name = newUser.getFirst("name");
+    	String surname = newUser.getFirst("surname");
+    	String uname = newUser.getFirst("username");
+    	String pwd = newUser.getFirst("password");
+    	String courseName = newUser.getFirst("coursename");
+    	String courseGroup = newUser.getFirst("coursegroup");
+    	
+    	System.out.println(name);
+    	System.out.println(surname);
+    	System.out.println(uname);
+    	System.out.println(pwd);
+    	System.out.println(courseName);
+    	
     	String responseStatus = "";
-      //  System.out.println("Inside doregister "+name+" "+surname+" "+uname+"  "+pwd+" "+specializationName+" "+specializationGroup);
-        int retCode = registerUser(name, surname, uname, pwd, specializationName, specializationGroup);
+        int retCode = registerUser(name, surname, uname, pwd, courseName, courseGroup);
         if(retCode == 0){
         	responseStatus = Utitlity.constructJSON("register",true);
         }else if(retCode == 1){
@@ -45,12 +57,12 @@ public class Register {
     
     
  
-    private int registerUser(String name, String username,  String uname, String pwd, String specializationName, String specializationGroup){
+    private int registerUser(String name, String username,  String uname, String pwd, String courseName, String courseGroup){
         System.out.println("Inside checkCredentials");
         int result = 3;
-        if(Utitlity.isNotNull(uname) && Utitlity.isNotNull(username) && Utitlity.isNotNull(pwd) && Utitlity.isNotNull(specializationName) && Utitlity.isNotNull(specializationGroup)){
+        if(Utitlity.isNotNull(uname) && Utitlity.isNotNull(username) && Utitlity.isNotNull(pwd) && Utitlity.isNotNull(courseName) && Utitlity.isNotNull(courseGroup)){
             try {
-                if(DBConnection.insertUser(name, username, uname, pwd, specializationName, specializationGroup)){
+                if(DBConnection.insertUser(name, username, uname, pwd, courseName, courseGroup)){
                     System.out.println("RegisterUSer if");
                     result = 0;
                 }

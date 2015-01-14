@@ -42,6 +42,7 @@ public class Login {
         boolean result = false;
         if(Utitlity.isNotNull(uname) && Utitlity.isNotNull(pwd)){
             try {
+
                 result = DBConnection.checkLoginAdmin(uname, pwd);
                 //System.out.println("Inside checkCredentials try "+result);
             } catch (Exception e) {

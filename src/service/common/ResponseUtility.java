@@ -23,9 +23,7 @@ public final class ResponseUtility {
 		      .status(200)
 		      .build();  
 	}
-	
-
-	
+		
 	public static Response error(){
 		return Response.status(500)
 				 .header("Access-Control-Allow-Origin", "*")

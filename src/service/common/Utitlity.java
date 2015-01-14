@@ -42,9 +42,7 @@ public class Utitlity {
            
 
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
         }
-        //return obj.toString();
         return obj.toString();
     }
  

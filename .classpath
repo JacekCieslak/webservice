@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="src/service"/>
 	<classpathentry kind="src" path="src/database"/>
 	<classpathentry kind="src" path="src/object"/>
+	<classpathentry kind="src" path="File"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre8">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
@@ -16,5 +17,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="C:/Users/Jaca/Workspace/mstudent/WebContent/WEB-INF/lib/guava-18.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

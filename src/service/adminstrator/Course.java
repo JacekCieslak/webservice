@@ -1,4 +1,4 @@
- package adminstrator;
+package adminstrator;
  
 import java.util.ArrayList;
 
@@ -115,7 +115,7 @@ public class Course {
 	    public Response getCourseName(@QueryParam("name") String name) {
 	    	boolean result = false;
 	    	try{
-	    		
+	    		System.out.println("getcourses name");
 	    		result = CourseDB.getCourse(name);
 	    	}catch(Exception e){
 	    		return ResponseUtility.error();

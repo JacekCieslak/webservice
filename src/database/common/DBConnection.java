@@ -27,12 +27,9 @@ public class DBConnection {
     }
   
     //User
-    public static boolean checkLogin(String uname, String pwd) throws Exception {
-       
-                
+    public static boolean checkLogin(String uname, String pwd) throws Exception {      
             String query = "SELECT * FROM user WHERE username = '" + uname
                     + "' AND password=" + "'" + pwd + "' AND status ='1'";
-            
             return executeIsAvaliable(query);
          
     }
@@ -103,7 +100,8 @@ public class DBConnection {
        
             String query = "SELECT * FROM admin WHERE username = '" + uname
                     + "' AND password=" + "'" + pwd + "'";
-            
+
+        	
            return executeIsAvaliable(query);
     }
     
@@ -406,8 +404,7 @@ public class DBConnection {
         	try
         	{
         		dbConn = DBConnection.createConnection();
-    	    	 Statement stmt = dbConn.createStatement();
-    	    	    	    	 
+    	    	 Statement stmt = dbConn.createStatement();  	 
     	 		 ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
@@ -429,6 +426,7 @@ public class DBConnection {
 	    		 dbConn.close();
 	    	 }
 	     }
+        	
         return isUserAvailable;
     }
 }

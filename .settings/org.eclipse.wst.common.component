@@ -5,6 +5,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/service"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/object"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/database"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/File"/>
         <property name="context-root" value="mstudent"/>
         <property name="java-output-path" value="/mstudent/build/classes"/>
     </wb-module>

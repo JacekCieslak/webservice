@@ -91,7 +91,7 @@ public static boolean getGroup(int id, String name) throws Exception{
     try {
         String query = "SELECT id_course FROM course WHERE UPPER(name)=UPPER('"+name+"') AND group_id='"+id+"'";	
        status = executeIsAvaliable(query);
-       System.out.print(query);
+       System.out.println(query);
     } catch (Exception e) {
         e.printStackTrace();
         System.out.println(e);
@@ -107,7 +107,7 @@ public static boolean getCourse(String name) throws Exception{
    
     try {
         String query = "SELECT name FROM course WHERE UPPER(name)=UPPER('"+name+"')";	
-       status = executeIsAvaliable(query);
+        status = executeIsAvaliable(query);
     } catch (Exception e) {
         e.printStackTrace();
         System.out.println(e);
@@ -121,7 +121,6 @@ public static boolean getCourseGroups(String name) throws Exception{
     try {
         String query = "SELECT name FROM course WHERE UPPER(name)=UPPER('"+name+"')";
        status = executeIsAvaliable(query);
-       System.out.print(query);
     } catch (Exception e) {
         e.printStackTrace();
         System.out.println(e);
@@ -170,7 +169,6 @@ public static boolean insertCourse(String name, int group) throws SQLException, 
         
         Statement stmt = dbConn.createStatement();
         String query = "INSERT INTO course (name, group_id) values ('"+name+"', '"+group+"')";
-        System.out.print(query);
         int records = stmt.executeUpdate(query);
         if (records > 0) {
             insertStatus = true;
@@ -281,7 +279,6 @@ public static boolean deleteUsers(String name) throws SQLException, Exception {
         
         Statement stmt = dbConn.createStatement();
         String query = "DELETE FROM USER WHERE id_course = ANY(SELECT id_course FROM course where name='"+name+"')";
-        System.out.print(query);
         int records = stmt.executeUpdate(query);
         if (records > 0) {
             insertStatus = true;
