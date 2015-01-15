@@ -13,7 +13,7 @@ public class UserDB {
 	
 	public static ArrayList<User> getUser(String name, int id) throws SQLException, Exception
 	{ 
-		ArrayList<User> userData = new ArrayList<User>();
+		ArrayList<User> documentData = new ArrayList<User>();
 		Connection dbConn = null;
 		try
 		{
@@ -30,7 +30,7 @@ public class UserDB {
 	        	 userObject.setSurname(rs.getString(3));
 	        	 userObject.setUsername(rs.getString(4));
 	        	 userObject.setStatus(rs.getString(5));
-	        	 userData.add(userObject);
+	        	 documentData.add(userObject);
 	         }
 	      
 	 	   } catch (SQLException sqle) {
@@ -49,7 +49,7 @@ public class UserDB {
 		    		 dbConn.close();
 		    	 }
 		     }
-		return userData;
+		return documentData;
 	}
 	
 	public static ArrayList<CourseGroup> getGroup(String name) throws SQLException, Exception

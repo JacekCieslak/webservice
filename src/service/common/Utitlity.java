@@ -5,9 +5,11 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import adminstrator.CourseGroup;
+import adminstrator.Documents;
 import adminstrator.GroupedCourse;
 import adminstrator.Schedule;
 import adminstrator.User;
+import adminstrator.UserGrade;
 import adminstrator.Users;
 
 import com.google.gson.Gson;
@@ -93,7 +95,13 @@ public class Utitlity {
         //return "callback(" + obj.toString() +")";
     }
     
-    
+    public static String construcDocumentsJSON(ArrayList<Documents> documentData)
+    {
+    	Gson gson = new Gson();
+    	String json = gson.toJson(documentData); 
+		return json;
+    	
+    }
     public static String constructCourseJSON(ArrayList<GroupedCourse> courseData)
     {
     	Gson gson = new Gson();
@@ -106,6 +114,14 @@ public class Utitlity {
     {
     	Gson gson = new Gson();
     	String json = gson.toJson(userData); 
+		return json;
+    	
+    }
+    
+    public static String constructUserGradeJSON(ArrayList<UserGrade> userGradeData)
+    {
+    	Gson gson = new Gson();
+    	String json = gson.toJson(userGradeData); 
 		return json;
     	
     }

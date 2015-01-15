@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.websocket.server.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,22 +19,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 
-import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
-import com.sun.xml.internal.ws.client.sei.ResponseBuilder;
-import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
-import com.google.common.io.Resources;
 
 @Path("/file")
-public class FileUpload {
+public class FileDirecotry {
 
-	private static final String SERVER_UPLOAD_LOCATION_FOLDER = "/";
 
-	/**
-	 * Upload a File
-	 */
 
 	@POST
 	@Path("/upload")
@@ -74,14 +65,6 @@ public class FileUpload {
 	      return Response.status(Response.Status.BAD_REQUEST).build();
 	    }
 	    String path = "/opt/tomcat/files/";
-	    // either set response injected above
-	    //response.setContentType("image/png");
-	    //response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-	    //TODO: write file content to response.getOutputStream();
-	    //response.getOutputStream().close();
-	    //return response;
-	 
-	    // OR: use a custom StreamingOutput and set to Response
 	    StreamingOutput so = new StreamingOutput() {
             @Override
             public void write(OutputStream os) throws IOException,
@@ -102,18 +85,70 @@ public class FileUpload {
 	            .header("content-disposition", "attachment; filename = "+ fileName)
 	            .build();
 	   
-	  
-	 
-	//  System.err.println("No such attachment");
-	 
-	//  return Response.status(Response.Status.BAD_REQUEST).build();
-	 
 	  } catch (Exception e) {
 	     System.err.println(e.getMessage());
 	     return Response.status(Response.Status.BAD_REQUEST).build();
 	  }
 	}
+	
+	
+	
+	@GET
+	@Path("/attachment/delete")
+	@Consumes("text/plain; charset=UTF-8")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response removeAttachment(
+	  @QueryParam("file") String fileName) {
+	  try {
+	    if (fileName == null) {
+	      System.err.println("No such item");
+	      return Response.status(Response.Status.BAD_REQUEST).build();
+	    }
+	 
+	   String savePath = "/opt/tomcat/files/"; 
+      
+         
+        String filePath = savePath + fileName;
+        
+        System.out.println(filePath);
+        File f = new File(filePath);
+        f.delete();
+		
+	    return Response.ok() 
+	            .build();
+	   
+	    } catch (Exception e) {
+	     System.err.println(e.getMessage());
+	     return Response.status(Response.Status.BAD_REQUEST).build();
+	  }
+	}
 
+	@GET
+	@Path("/attachment/all")
+	@Consumes("text/plain; charset=UTF-8")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response all() {
+	  
+      String files ="";
+      
+	
+    
+File folder = new File("/opt/tomcat/files/");
+File[] listOfFiles = folder.listFiles();
+for (File file : listOfFiles) {
+    if (file.isFile()) {
+	files+="\n "+file.getName();
+        System.out.println(file.getName());
+    }
+}
+	    return Response.ok(files, "application/text") 
+	            .build();
+ 
+	}
+	
+	
+	
+	
 	// save uploaded file to a defined location on the server
     private void saveFile(InputStream uploadedInputStream, String serverLocation) {
 		try {
