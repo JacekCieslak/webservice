@@ -15,11 +15,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import model.Schedule;
 import common.DBConnection;
 import common.ResponseUtility;
 import common.Utitlity;
 
-@Path("/adminstrator/schedule/")
+@Path("/model/schedule/")
 public class Schedules {
 	
 	

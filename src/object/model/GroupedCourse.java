@@ -1,4 +1,4 @@
-package adminstrator;
+package model;
 
 public class GroupedCourse {
 	private int Id;

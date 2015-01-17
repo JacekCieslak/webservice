@@ -11,10 +11,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import model.GroupedCourse;
 import common.ResponseUtility;
 import common.Utitlity;
  
- @Path("/adminstrator")
+ @Path("/model")
 public class Course {
 
 	    @GET
@@ -115,7 +116,6 @@ public class Course {
 	    public Response getCourseName(@QueryParam("name") String name) {
 	    	boolean result = false;
 	    	try{
-	    		System.out.println("getcourses name");
 	    		result = CourseDB.getCourse(name);
 	    	}catch(Exception e){
 	    		return ResponseUtility.error();

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import model.GroupedCourse;
 import common.DBConnection;
 
 public class CourseDB {
@@ -26,7 +27,6 @@ public static ArrayList<GroupedCourse> getCoursesAdmin() throws SQLException, Ex
 		dbConn = DBConnection.createConnection();
     	 Statement stmt = dbConn.createStatement();
     	 String query = "SELECT id_course, name, group_id FROM `course`ORDER BY name, group_id ";
-    	 System.out.print(query);
  		 ResultSet rs = stmt.executeQuery(query);
 
          while (rs.next())
@@ -74,7 +74,6 @@ public static boolean updateCourse(String oldname, String newname) throws SQLExc
     boolean insertStatus = false;
     try {
         String query = "UPDATE course SET name='"+newname+"' WHERE name='"+oldname+"'";
-        System.out.print(query);
        insertStatus = executeInsertQuery(query);
     } catch (Exception e) {
         e.printStackTrace();
@@ -91,7 +90,6 @@ public static boolean getGroup(int id, String name) throws Exception{
     try {
         String query = "SELECT id_course FROM course WHERE UPPER(name)=UPPER('"+name+"') AND group_id='"+id+"'";	
        status = executeIsAvaliable(query);
-       System.out.println(query);
     } catch (Exception e) {
         e.printStackTrace();
         System.out.println(e);

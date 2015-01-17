@@ -11,11 +11,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import model.UserGrade;
 import common.ResponseUtility;
 import common.Utitlity;
 
 
-@Path("/adminstrator/grade/")
+@Path("/model/grade/")
 public class Grade {
 	
 	

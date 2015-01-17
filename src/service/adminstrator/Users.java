@@ -10,10 +10,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import model.CourseGroup;
+import model.User;
 import common.ResponseUtility;
 import common.Utitlity;
  
- @Path("/adminstrator/user/")
+ @Path("/model/user/")
 public class Users {
 	 
 //	 @GET

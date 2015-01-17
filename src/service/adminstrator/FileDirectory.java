@@ -22,35 +22,105 @@ import javax.ws.rs.core.StreamingOutput;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 import com.google.common.io.Files;
+import common.ResponseUtility;
 
 @Path("/file")
-public class FileDirecotry {
+public class FileDirectory {
 
 
 
 	@POST
-	@Path("/upload")
+	@Path("/upload/course")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response uploadFile(
+	public Response uploadFileToCourse(
 			@FormDataParam("file") InputStream fileInputStream,
-			@FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
+			@FormDataParam("file") FormDataContentDisposition contentDispositionHeader,
+			@QueryParam("name") String name) {
 
 		
 		String savePath = System.getProperty("java.io.tmpdir");
 		
-			System.out.println(savePath);
-		
-		String filePath = savePath 
+			
+		String filePath = savePath + "/"+name+"/wyklady/"
 				+ contentDispositionHeader.getFileName();
 		
 		
-		// save the file to the server
+	
 		saveFile(fileInputStream, filePath);
 
 		String output = "File saved to server location : " + filePath;
 
 		return Response.status(200).entity(output).build();
 
+	}
+	
+	@POST
+	@Path("/upload/labs")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response uploadFileToLabs(
+			@FormDataParam("file") InputStream fileInputStream,
+			@FormDataParam("file") FormDataContentDisposition contentDispositionHeader,
+			@QueryParam("name") String name) {
+
+		
+		String savePath = System.getProperty("java.io.tmpdir");
+		
+			System.out.println(savePath);
+		
+		String filePath = savePath + "/"+name+"/laboratorium/"
+				+ contentDispositionHeader.getFileName();
+		
+		
+	
+		saveFile(fileInputStream, filePath);
+
+		String output = "File saved to server location : " + filePath;
+
+		return Response.status(200).entity(output).build();
+
+	}
+	
+	@POST
+	@Path("/addcourse")
+	public Response addDirectoryCourse(
+			@QueryParam("name") String name) {
+
+		try{
+		String savePath = System.getProperty("java.io.tmpdir");;
+		
+		String filePath = savePath 
+				+ name;
+		addDirectory(filePath);
+		addDirectory(filePath+"/wyklady/");
+		addDirectory(filePath+"/laboratorium/");
+		String output = "Directory create to server location : " + filePath;
+		return ResponseUtility.ok(output);
+		}catch(Exception e){
+			return ResponseUtility.error();
+		}
+		
+	}
+	
+	@POST
+	@Path("/renamecourse")
+	public Response renameDirectoryCourse(
+			@QueryParam("oldname") String oldName, @QueryParam("newname") String newName) {
+
+		try{
+		String savePath = System.getProperty("java.io.tmpdir");;
+		
+		String filePath = savePath 
+				+ oldName;
+		String newFilePath = savePath 
+				+ newName;
+		
+		renameDirectory(filePath, newFilePath);
+		String output = "Directory renamed to server location : " + newFilePath;
+		return ResponseUtility.ok(output);
+		}catch(Exception e){
+			return ResponseUtility.error();
+		}
+		
 	}
 	
 	@GET
@@ -146,10 +216,7 @@ for (File file : listOfFiles) {
  
 	}
 	
-	
-	
-	
-	// save uploaded file to a defined location on the server
+
     private void saveFile(InputStream uploadedInputStream, String serverLocation) {
 		try {
 			String path = serverLocation.toLowerCase().replace("temp","files/");
@@ -171,6 +238,37 @@ for (File file : listOfFiles) {
 			outpuStream.flush();
 			outpuStream.close();
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+    
+    private void addDirectory(String location) {
+		try {
+			String path = location.toLowerCase().replace("temp","files/");
+			System.out.println(path);
+			
+			File targetFile = new File(path);
+			if(!targetFile.exists()){
+				targetFile.mkdirs();
+				//				Files.createParentDirs(targetFile);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+    private void renameDirectory(String location, String newLocation) {
+		try {
+			String path = location.toLowerCase().replace("temp","files/");
+			String newPath = newLocation.toLowerCase().replace("temp","files/");
+			File targetFile = new File(path);
+			
+			File newTargetFile = new File(newPath);
+			if(targetFile.exists()){
+				targetFile.renameTo(newTargetFile);
+			}
+			
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

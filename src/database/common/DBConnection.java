@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import adminstrator.GroupedCourse;
+import model.GroupedCourse;
 import common.Constants;
  
 public class DBConnection {

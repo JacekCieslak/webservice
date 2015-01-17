@@ -1,15 +1,16 @@
 package common;
 
 
+import model.CourseGroup;
+import model.Documents;
+import model.GroupedCourse;
+import model.Schedule;
+import model.User;
+import model.UserGrade;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import adminstrator.CourseGroup;
-import adminstrator.Documents;
-import adminstrator.GroupedCourse;
-import adminstrator.Schedule;
-import adminstrator.User;
-import adminstrator.UserGrade;
 import adminstrator.Users;
 
 import com.google.gson.Gson;

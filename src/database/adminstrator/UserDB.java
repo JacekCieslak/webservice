@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import model.CourseGroup;
+import model.User;
 import common.DBConnection;
 
 public class UserDB {
